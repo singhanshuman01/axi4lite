@@ -13,7 +13,7 @@ module master #(
 
     // write data channel
     output reg [DATA_WIDTH-1:0] WDATA,
-    // input wire [(DATA_WIDTH/8)-1:0] WSTRB,
+    // output wire [(DATA_WIDTH/8)-1:0] WSTRB,
     output reg                  WVALID,
     input                       WREADY,
 
@@ -33,5 +33,7 @@ module master #(
     input                       RVALID,
     output reg                  RREADY
 );
+
+
     
 endmodule
