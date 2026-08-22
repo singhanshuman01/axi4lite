@@ -51,6 +51,8 @@ localparam W_IDLE = 2'b00,                          // WRITE STATES
 
 reg [1:0] state;
 
+reg [1:0] bresp_latch;
+
 always @(posedge ACLK or negedge ARESETN) begin
     if(!ARESETN) begin
         AWVALID <= 1'b0;
@@ -77,11 +79,13 @@ always @(posedge ACLK or negedge ARESETN) begin
                 if(AWREADY) AWVALID <= 1'b0;
                 if(WREADY) WVALID <= 1'b0;
 
-                if(BVALID) state <= W_DONE;
+                if(BVALID) begin
+                    state <= W_DONE;
+                    BREADY <= 1'b1;
+                end
             end
             W_DONE: begin
-                BREADY <= 1'b1;
-
+                bresp_latch <= BRESP;
                 state <= W_IDLE;
             end
             default: ;
@@ -91,6 +95,8 @@ end
 
 
 // READ TRANSACTION
+
+reg [1:0] rresp_latch;
 
 always @(posedge ACLK or negedge ARESETN) begin
     if(!ARESETN) begin
@@ -105,7 +111,13 @@ always @(posedge ACLK or negedge ARESETN) begin
 
         if(ARVALID && ARREADY) ARVALID <= 1'b0;
 
-        if(RVALID) RREADY <= 1'b1;
+        if(RVALID && !RREADY) RREADY <= 1'b1;
+
+        if(RVALID && RREADY) begin
+            read_data <= RDATA;
+            rresp_latch <= RRESP;
+            RREADY <= 1'b0;
+        end
     end
 end
     
