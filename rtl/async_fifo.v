@@ -1,17 +1,20 @@
-module async_fifo (
-    output [7:0]    r_data,
-    output          empty, full,
-    input [7:0]     w_data,
-    input           rclk, wclk,
-    input           rrst_n, wrst_n,
-    input           write_en, read_en
+module async_fifo #(
+    parameter DATA_WIDTH = 32
+)
+(
+    output [DATA_WIDTH-1:0] r_data,
+    output                  empty, full,
+    input [DATA_WIDTH-1:0]  w_data,
+    input                   rclk, wclk,
+    input                   rrst_n, wrst_n,
+    input                   write_en, read_en
 );
 
 wire [4:0] nxt_wptr_gray, nxt_rptr_gray;
 wire [3:0] waddr, raddr;
 wire [4:0] sync_nxt_wptr_gray, sync_nxt_rptr_gray;
 
-memory mem_inst(
+memory #(.DATA_WIDTH(DATA_WIDTH)) mem_inst(
     .read_data  (r_data),
     .write_data (w_data),
     .read_addr  (raddr),
@@ -60,15 +63,17 @@ handler_wptr handler_wptr_inst (
 
 endmodule
 
-module memory (
-    output [7:0]    read_data,
-    input [7:0]     write_data,
+module memory #(
+    parameter DATA_WIDTH = 32
+) (
+    output [DATA_WIDTH-1:0]    read_data,
+    input [DATA_WIDTH-1:0]     write_data,
     input [3:0]     read_addr, write_addr,
     input           rclk, ren, empty,
     input           wclk, wen, full 
 );
 
-reg [7:0] mem [0:15];
+reg [DATA_WIDTH-1:0] mem [0:15];
 
 assign read_data = mem[read_addr];
 
