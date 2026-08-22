@@ -144,7 +144,7 @@ always @(posedge aclk or negedge arst_n) begin
         // not already asserted
         // if not pending response
         if(arvalid && !arready && !rvalid && !empty) arready <= 1'b1;
-        
+
         // latch address once ready and valid
         if(arvalid && arready) begin
             arready <= 1'b0;
