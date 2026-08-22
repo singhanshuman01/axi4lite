@@ -50,14 +50,18 @@ module slave #(
 // 4 registers for write/read
 reg [DATA_WIDTH-1:0] ctrl;
 reg [DATA_WIDTH-1:0] status;
-reg [DATA_WIDTH-1:0] tx_fifo;
-reg [DATA_WIDTH-1:0] rx_fifo;
 
 // latches to hold address or data until both arrive
 reg [ADDR_WIDTH-1:0] waddr_latch;
 reg [DATA_WIDTH-1:0] wdata_latch;
 reg have_waddr, have_wdata;                         // to indicate that address or data are succesfully latched
 
+always @(*) begin
+    status[0] = 1'b0;
+    status[1] = !empty;
+    status[2] = full;
+    status[31:3] = 29'b0;
+end
 
 assign tx_fifo_clk = aclk;
 assign tx_fifo_rst_n = arst_n;
