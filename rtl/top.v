@@ -5,7 +5,7 @@ module top #(
     input clk,
     input rst_n,
 
-    input start_write,
+    input                       start_write,
     input [ADDR_WIDTH-1:0]      write_addr,
     input [DATA_WIDTH-1:0]      write_data,
 

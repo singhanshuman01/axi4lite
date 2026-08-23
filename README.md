@@ -1,10 +1,12 @@
 # AXI4 Lite 
 
+![Block Diagram](block_diags/axi4lite.jpg)
+
 # Entity: master 
 - **File**: master.v
 
 ## Diagram
-![Diagram](master.svg "Diagram")
+![Diagram](block_diags/master.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |
@@ -57,21 +59,21 @@
 | W_DONE |      | 2'b11 |             |
 
 ## Processes
-- unnamed: ( @(posedge ACLK or negedge ARESETN) )
+- write states + Datapath(FSMD): ( @(posedge ACLK or negedge ARESETN) )
   - **Type:** always
-- unnamed: ( @(posedge ACLK or negedge ARESETN) )
+- read logic: ( @(posedge ACLK or negedge ARESETN) )
   - **Type:** always
 
 ## State machines
 
-![Diagram_state_machine_0]( fsm_master_00.svg "Diagram")
+![Diagram_state_machine_0]( block_diags/fsm_master_00.svg "Diagram")
 
 
 # Entity: slave 
 - **File**: slave.v
 
 ## Diagram
-![Diagram](slave.svg "Diagram")
+![Diagram](block_diags/slave.svg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |
@@ -126,9 +128,56 @@
 | have_raddr  | reg                  |             |
 
 ## Processes
-- unnamed: ( @(*) )
+- state register: ( @(*) )
   - **Type:** always
-- unnamed: ( @(posedge aclk or negedge arst_n) )
+- write logic: ( @(posedge aclk or negedge arst_n) )
   - **Type:** always
-- unnamed: ( @(posedge aclk or negedge arst_n) )
+- read logic: ( @(posedge aclk or negedge arst_n) )
   - **Type:** always
+
+
+
+# Entity: async_fifo 
+- **File**: async_fifo.v
+
+## Diagram
+![Diagram](block_diags/async_fifo.svg "Diagram")
+## Generics
+
+| Generic name | Type | Value | Description |
+| ------------ | ---- | ----- | ----------- |
+| DATA_WIDTH   |      | 32    |             |
+
+## Ports
+
+| Port name | Direction | Type             | Description |
+| --------- | --------- | ---------------- | ----------- |
+| r_data    | output    | [DATA_WIDTH-1:0] |             |
+| empty     | output    |                  |             |
+| full      |           |                  |             |
+| w_data    | input     | [DATA_WIDTH-1:0] |             |
+| rclk      | input     |                  |             |
+| wclk      |           |                  |             |
+| rrst_n    | input     |                  |             |
+| wrst_n    |           |                  |             |
+| write_en  | input     |                  |             |
+| read_en   |           |                  |             |
+
+## Signals
+
+| Name               | Type       | Description |
+| ------------------ | ---------- | ----------- |
+| nxt_wptr_gray      | wire [4:0] |             |
+| nxt_rptr_gray      | wire [4:0] |             |
+| waddr              | wire [3:0] |             |
+| raddr              | wire [3:0] |             |
+| sync_nxt_wptr_gray | wire [4:0] |             |
+| sync_nxt_rptr_gray | wire [4:0] |             |
+
+## Instantiations
+
+- mem_inst: memory
+- sync_wptr_inst: sync_wptr
+- sync_rptr_inst: sync_rptr
+- handler_rptr_inst: handler_rptr
+- handler_wptr_inst: handler_wptr
