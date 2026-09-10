@@ -1,5 +1,7 @@
 # AXI4 Lite 
 
+AXI4 Lite master slave module with async fifo for peripherals
+
 ![Block Diagram](block_diags/axi4lite.jpg)
 
 # Entity: master 
