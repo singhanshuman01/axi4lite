@@ -8,7 +8,7 @@ AXI4 Lite master slave module with async fifo for peripherals
 - **File**: master.v
 
 ## Diagram
-![Diagram](block_diags/master.svg "Diagram")
+![Diagram](block_diags/master.jpg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |
@@ -75,7 +75,7 @@ AXI4 Lite master slave module with async fifo for peripherals
 - **File**: slave.v
 
 ## Diagram
-![Diagram](block_diags/slave.svg "Diagram")
+![Diagram](block_diags/slave.jpg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |
@@ -143,7 +143,7 @@ AXI4 Lite master slave module with async fifo for peripherals
 - **File**: async_fifo.v
 
 ## Diagram
-![Diagram](block_diags/async_fifo.svg "Diagram")
+![Diagram](block_diags/async_fifo.jpg "Diagram")
 ## Generics
 
 | Generic name | Type | Value | Description |
